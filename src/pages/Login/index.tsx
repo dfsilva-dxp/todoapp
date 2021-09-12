@@ -1,3 +1,5 @@
+import { Button } from "components/Button";
+import { Input } from "components/Input";
 import { useState } from "react";
 import { TiThListOutline } from "react-icons/ti";
 
@@ -18,8 +20,8 @@ export const Login = () => {
             <S.Title data-title="Todo App">
               <TiThListOutline />
             </S.Title>
-            <S.Input type="email" name="email" required placeholder="E-mail" />
-            <S.Input
+            <Input type="email" name="email" required placeholder="E-mail" />
+            <Input
               type="password"
               name="password"
               required
@@ -27,11 +29,11 @@ export const Login = () => {
             />
             {!hasAccount ? (
               <>
-                <S.Button type="submit">Entrar</S.Button>
+                <Button type="submit">Entrar</Button>
               </>
             ) : (
               <>
-                <S.Button type="submit">Cadastrar</S.Button>
+                <Button type="submit">Cadastrar</Button>
               </>
             )}
 
