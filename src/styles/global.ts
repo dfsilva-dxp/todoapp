@@ -20,6 +20,7 @@ html {
 }
 body {
   background: #f2f3f5;
+  color: #353646;
   font-family: "Roboto", sans-serif;
   overflow: hidden;
 }
