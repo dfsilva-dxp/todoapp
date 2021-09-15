@@ -1,14 +1,14 @@
-import { AuthContextProvider } from "contexts/AuthContext";
-import { Login } from "./pages/Login";
+import { Login } from "pages/Login";
+import { BrowserRouter } from "react-router-dom";
 
 import { GlobalStyles } from "./styles/global";
 
 function App() {
   return (
-    <AuthContextProvider>
+    <BrowserRouter>
       <GlobalStyles />
       <Login />
-    </AuthContextProvider>
+    </BrowserRouter>
   );
 }
 
