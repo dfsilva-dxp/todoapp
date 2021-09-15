@@ -1,34 +1,41 @@
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { TiThListOutline } from "react-icons/ti";
 
 import { Button } from "components/Button";
 import { Input } from "components/Input";
 
-import { useAuth } from "hooks/useAuth";
-
 import * as S from "./styles";
 
+type Credentials = {
+  email: string;
+  password: string;
+};
+
 export const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [credentials, setCredentials] = useState<Credentials>({
+    email: "",
+    password: "",
+  });
   const [hasAccount, setHasAccount] = useState(false);
 
-  const { signIn } = useAuth();
-
-  function setCredentials() {
-    setEmail("");
-    setPassword("");
-  }
-
-  function handleClick() {
+  function toggleHasAccount() {
     setHasAccount(!hasAccount);
   }
 
   function handleSignIn(e: FormEvent) {
     e.preventDefault();
-    const credentials = { email, password };
-    signIn(credentials);
-    setCredentials();
+    setCredentials({
+      email: "",
+      password: "",
+    });
+  }
+
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+    setCredentials({
+      ...credentials,
+      [name]: value,
+    });
   }
 
   return (
@@ -42,16 +49,16 @@ export const Login = () => {
             <Input
               type="email"
               name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={credentials.email}
+              onChange={handleChange}
               required
               placeholder="E-mail"
             />
             <Input
               type="password"
               name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={credentials.password}
+              onChange={handleChange}
               required
               placeholder="Senha"
             />
@@ -70,11 +77,12 @@ export const Login = () => {
             {!hasAccount ? (
               <p>
                 Não tem uma conta?{" "}
-                <span onClick={handleClick}>Clique aqui</span>
+                <span onClick={toggleHasAccount}>Clique aqui</span>
               </p>
             ) : (
               <p>
-                Já tem uma conta? <span onClick={handleClick}>Clique aqui</span>
+                Já tem uma conta?{" "}
+                <span onClick={toggleHasAccount}>Clique aqui</span>
               </p>
             )}
           </S.Form>
