@@ -7,6 +7,7 @@ import {
 } from "react";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import firebase from "../services/firebase";
 
@@ -59,21 +60,24 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const signIn = async ({ email, password }: Credentials) => {
     try {
       setLoading(true);
-      navigate("home");
 
       const user = await firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then(({ user }) => user);
 
+      navigate("home");
+
       if (user) {
         const { refreshToken, uid } = user;
         session(refreshToken);
         setUser({ email, refreshToken, uid });
       }
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message);
+      }
+      navigate("/");
     } finally {
       setTimeout(() => {
         setLoading(false);
