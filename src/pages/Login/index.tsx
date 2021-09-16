@@ -1,8 +1,10 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { TiThListOutline } from "react-icons/ti";
 
-import { Button } from "components/Button";
-import { Input } from "components/Input";
+import { useAuth } from "../../hooks/useAuth";
+
+import { Button } from "../../components/Button";
+import { Input } from "../../components/Input";
 
 import * as S from "./styles";
 
@@ -18,25 +20,31 @@ export const Login = () => {
   });
   const [hasAccount, setHasAccount] = useState(false);
 
-  function toggleHasAccount() {
+  const { signIn } = useAuth();
+
+  const toggleHasAccount = () => {
     setHasAccount(!hasAccount);
-  }
+  };
 
-  function handleSignIn(e: FormEvent) {
-    e.preventDefault();
-    setCredentials({
-      email: "",
-      password: "",
-    });
-  }
+  const handleSignIn = (e: FormEvent) => {
+    try {
+      e.preventDefault();
+      signIn(credentials);
+    } finally {
+      setCredentials({
+        email: "",
+        password: "",
+      });
+    }
+  };
 
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setCredentials({
       ...credentials,
       [name]: value,
     });
-  }
+  };
 
   return (
     <S.Main>
