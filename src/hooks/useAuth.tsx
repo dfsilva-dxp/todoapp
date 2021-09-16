@@ -45,10 +45,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const navigate = useNavigate();
 
+  const session = (refreshToken = "") => {
+    if (refreshToken) {
+      setCookie(undefined, "todo.app", refreshToken, {
+        maxAge: 60 * 60, // 1 hour
+        path: "/",
+      });
+    } else {
+      destroyCookie(undefined, "todo.app");
+    }
+  };
+
   const signIn = async ({ email, password }: Credentials) => {
     try {
       setLoading(true);
       navigate("home");
+
       const user = await firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
@@ -56,12 +68,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       if (user) {
         const { refreshToken, uid } = user;
-
-        setCookie(undefined, "todo.app", refreshToken, {
-          maxAge: 60 * 60, // 1 hour
-          path: "/",
-        });
-
+        session(refreshToken);
         setUser({ email, refreshToken, uid });
       }
     } catch (error) {
@@ -80,7 +87,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       .signOut()
       .then(() => {
         setUser({} as User);
-        destroyCookie(undefined, "todo.app");
+        session();
       })
       .finally(() => navigate("/"));
   };
