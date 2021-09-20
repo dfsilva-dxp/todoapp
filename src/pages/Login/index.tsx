@@ -1,4 +1,5 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useCallback, useState } from "react";
+import { useHistory } from "react-router";
 import { TiThListOutline } from "react-icons/ti";
 
 import { useAuth } from "../../hooks/useAuth";
@@ -19,23 +20,11 @@ export const Login = () => {
     password: "",
   });
   const [hasAccount, setHasAccount] = useState(false);
-
+  const history = useHistory();
   const { signIn } = useAuth();
 
   const toggleHasAccount = () => {
     setHasAccount(!hasAccount);
-  };
-
-  const handleSignIn = (e: FormEvent) => {
-    try {
-      e.preventDefault();
-      signIn(credentials);
-    } finally {
-      setCredentials({
-        email: "",
-        password: "",
-      });
-    }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +34,22 @@ export const Login = () => {
       [name]: value,
     });
   };
+
+  const handleSignIn = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault();
+
+      signIn(credentials);
+      history.push("home");
+
+      setCredentials({
+        email: "",
+        password: "",
+      });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [credentials]
+  );
 
   return (
     <S.Main>
