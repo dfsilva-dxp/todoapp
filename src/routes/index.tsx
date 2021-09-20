@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Route, Switch } from "react-router";
 
 import { AuthProvider } from "../hooks/useAuth";
 
@@ -9,10 +9,10 @@ import { PrivateRoutes } from "./private";
 const MyRoutes = () => {
   return (
     <AuthProvider>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <PrivateRoutes isPrivate path="home" element={<Home />} />
-      </Routes>
+      <Switch>
+        <Route path="/" exact component={Login} />
+        <PrivateRoutes path="home" component={Home} />
+      </Switch>
     </AuthProvider>
   );
 };
