@@ -45,12 +45,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const session = (refreshToken = "") => {
     if (refreshToken) {
-      setCookie(undefined, "todo.app", refreshToken, {
+      setCookie(undefined, "todo.refreshToken", refreshToken, {
         maxAge: 60 * 60, // 1 hour
         path: "/",
       });
     } else {
-      destroyCookie(undefined, "todo.app");
+      destroyCookie(undefined, "todo.refreshToken");
     }
   };
 
@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   useEffect(() => {
-    const { "todo.app": refreshToken } = parseCookies();
+    const { "todo.refreshToken": refreshToken } = parseCookies();
 
     if (refreshToken) {
       setLoading(true);
