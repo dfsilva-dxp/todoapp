@@ -9,6 +9,7 @@ import { destroyCookie, parseCookies, setCookie } from "nookies";
 import { toast } from "react-toastify";
 
 import firebase from "../services/firebase";
+import { useHistory } from "react-router";
 
 type AuthProviderProps = {
   children: ReactNode;
@@ -43,6 +44,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User>({} as User);
   const [loading, setLoading] = useState(false);
 
+  const history = useHistory();
+
   const session = (refreshToken = "") => {
     if (refreshToken) {
       setCookie(undefined, "todo.refreshToken", refreshToken, {
@@ -66,9 +69,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             const { refreshToken, uid } = user;
             session(refreshToken);
             setUser({ email, refreshToken, uid });
+            history.push("home");
           }
         });
     } catch (err) {
+      history.push("/");
       if (err instanceof Error) {
         toast.error(err.message);
       }
@@ -86,7 +91,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       .then(() => {
         setUser({} as User);
         session();
-      });
+      })
+      .finally(() => history.push("/"));
   };
 
   useEffect(() => {
