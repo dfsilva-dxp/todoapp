@@ -1,16 +1,19 @@
 import { parseCookies } from "nookies";
-import { Navigate, Route, RouteProps } from "react-router";
+import { Redirect, Route, RouteProps } from "react-router";
+
+import { useAuth } from "../hooks/useAuth";
 
 interface PrivateRoutesProps extends RouteProps {
   isPrivate?: boolean;
 }
 
 export function PrivateRoutes({ isPrivate, ...params }: PrivateRoutesProps) {
-  const { "todo.app": refreshToken } = parseCookies();
+  const { loading } = useAuth();
+  const { "todo.refreshToken": refreshToken } = parseCookies();
 
-  return isPrivate && !!!refreshToken ? (
-    <Navigate to="/" />
-  ) : (
-    <Route {...params} />
-  );
+  if (!loading && !!!refreshToken) {
+    return <Redirect to="/" />;
+  }
+
+  return <Route {...params} />;
 }
