@@ -6,7 +6,6 @@ import {
   useState,
 } from "react";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import firebase from "../services/firebase";
@@ -44,8 +43,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User>({} as User);
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
-
   const session = (refreshToken = "") => {
     if (refreshToken) {
       setCookie(undefined, "todo.app", refreshToken, {
@@ -61,23 +58,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       setLoading(true);
 
-      const user = await firebase
+      await firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
-        .then(({ user }) => user);
-
-      navigate("home");
-
-      if (user) {
-        const { refreshToken, uid } = user;
-        session(refreshToken);
-        setUser({ email, refreshToken, uid });
-      }
+        .then(({ user }) => {
+          if (user) {
+            const { refreshToken, uid } = user;
+            session(refreshToken);
+            setUser({ email, refreshToken, uid });
+          }
+        });
     } catch (err) {
       if (err instanceof Error) {
         toast.error(err.message);
       }
-      navigate("/");
     } finally {
       setTimeout(() => {
         setLoading(false);
@@ -92,8 +86,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       .then(() => {
         setUser({} as User);
         session();
-      })
-      .finally(() => navigate("/"));
+      });
   };
 
   useEffect(() => {
