@@ -87,6 +87,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signOut = async ({ email, password }: Credentials) => {
     try {
+      setLoading(true);
+
       await firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
@@ -105,6 +107,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           icon: false,
         });
       }
+    } finally {
+      setLoading(false);
     }
   };
 
