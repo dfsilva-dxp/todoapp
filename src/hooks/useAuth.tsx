@@ -5,11 +5,11 @@ import {
   useEffect,
   useState,
 } from "react";
-import { destroyCookie, parseCookies, setCookie } from "nookies";
 import { toast } from "react-toastify";
+import { useHistory } from "react-router";
 
 import firebase from "../services/firebase";
-import { useHistory } from "react-router";
+import { useCookies } from "./useCookies";
 
 type AuthProviderProps = {
   children: ReactNode;
@@ -44,17 +44,15 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User>({} as User);
   const [loading, setLoading] = useState(false);
+  const { refreshToken, cookies } = useCookies();
 
   const history = useHistory();
 
   const session = (refreshToken = "") => {
     if (refreshToken) {
-      setCookie(undefined, "todo.refreshToken", refreshToken, {
-        maxAge: 60 * 60, // 1 hour
-        path: "/",
-      });
+      cookies.set("todo.refreshToken", refreshToken);
     } else {
-      destroyCookie(undefined, "todo.refreshToken");
+      cookies.remove("todo.refreshToken");
     }
   };
 
@@ -95,10 +93,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         .then(() => {
           firebase.auth().signOut();
         });
-      toast.success("User created successfully!");
+
+      toast.success("User created successfully!", {
+        theme: "colored",
+        icon: false,
+      });
     } catch (err) {
       if (err instanceof Error) {
-        toast.error(err.message);
+        toast.error(err.message, {
+          theme: "colored",
+          icon: false,
+        });
       }
     }
   };
@@ -111,12 +116,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser({} as User);
         session();
       })
-      .finally(() => history.push("/"));
+      .finally(() => history.push("/login"));
   };
 
   useEffect(() => {
-    const { "todo.refreshToken": refreshToken } = parseCookies();
-
     if (refreshToken) {
       setLoading(true);
       firebase.auth().onAuthStateChanged((user) => {
@@ -127,7 +130,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setLoading(false);
       });
     }
-  }, []);
+  }, [refreshToken]);
 
   return (
     <AuthContext.Provider
