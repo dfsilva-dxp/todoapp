@@ -1,6 +1,9 @@
 import { useCallback } from "react";
+import { Preloader } from "../../components/Preloader";
 
 import { useAuth } from "../../hooks/useAuth";
+
+import * as S from "./styles";
 
 export function Home() {
   const { user, loading, logout } = useAuth();
@@ -13,7 +16,9 @@ export function Home() {
   return (
     <>
       {loading ? (
-        <h1>loading...</h1>
+        <S.PreloaderContent>
+          <Preloader />
+        </S.PreloaderContent>
       ) : (
         <>
           <h1>{user.email}</h1>
