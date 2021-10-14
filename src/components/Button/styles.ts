@@ -12,9 +12,9 @@ export const Button = styled.button`
   font-size: 1rem;
   line-height: 1.5;
   font-weight: 600;
-  color: #fff;
-  background-color: #fd6699;
-  border-color: #fd6699;
+  color: var(--white);
+  background-color: var(--purple-400);
+  border-color: var(--purple-400);
 
   transition: filter 0.15s ease-in-out;
 
