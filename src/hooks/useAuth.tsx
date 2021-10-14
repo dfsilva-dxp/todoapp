@@ -25,7 +25,8 @@ type User = {
 type AuthContextData = {
   user: User;
   loading: boolean;
-  signIn: ({ email, password }: Credentials) => void;
+  signIn: ({ email, password }: Credentials) => Promise<void>;
+  signOut: ({ email, password }: Credentials) => Promise<void>;
   logout: () => Promise<void>;
 };
 
@@ -69,18 +70,36 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             const { refreshToken, uid } = user;
             session(refreshToken);
             setUser({ email, refreshToken, uid });
-            history.push("home");
           }
         });
     } catch (err) {
-      history.push("/");
+      history.push("/login");
       if (err instanceof Error) {
-        toast.error(err.message);
+        toast.error(err.message, {
+          theme: "colored",
+          icon: false,
+        });
       }
     } finally {
       setTimeout(() => {
         setLoading(false);
       }, 1000);
+    }
+  };
+
+  const signOut = async ({ email, password }: Credentials) => {
+    try {
+      await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          firebase.auth().signOut();
+        });
+      toast.success("User created successfully!");
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message);
+      }
     }
   };
 
@@ -116,6 +135,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         user,
         loading,
         signIn,
+        signOut,
         logout,
       }}
     >

@@ -1,5 +1,4 @@
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
-import { TiThListOutline } from "react-icons/ti";
 
 import { useAuth } from "../../hooks/useAuth";
 
@@ -7,6 +6,7 @@ import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 
 import * as S from "./styles";
+import { useHistory } from "react-router";
 
 type Credentials = {
   email: string;
@@ -19,7 +19,8 @@ export const Login = () => {
     password: "",
   });
   const [hasAccount, setHasAccount] = useState(false);
-  const { signIn } = useAuth();
+  const { signIn, signOut } = useAuth();
+  const history = useHistory();
 
   const toggleHasAccount = () => {
     setHasAccount(!hasAccount);
@@ -36,7 +37,23 @@ export const Login = () => {
   const handleSignIn = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
+
       signIn(credentials);
+      history.push("/");
+
+      setCredentials({
+        email: "",
+        password: "",
+      });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [credentials]
+  );
+
+  const handleSignOut = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault();
+      signOut(credentials);
       setCredentials({
         email: "",
         password: "",
@@ -51,9 +68,12 @@ export const Login = () => {
       <S.Container>
         <S.Wrap>
           <S.Form onSubmit={(e) => e.preventDefault()}>
-            <S.Title data-title="Todo App">
-              <TiThListOutline />
-            </S.Title>
+            {!hasAccount ? (
+              <S.Title data-title="Login" />
+            ) : (
+              <S.Title data-title="Cadastro" />
+            )}
+
             <Input
               type="email"
               name="email"
@@ -72,13 +92,15 @@ export const Login = () => {
             />
             {!hasAccount ? (
               <>
-                <Button type="submit" handleSignIn={handleSignIn}>
+                <Button type="submit" onClick={handleSignIn}>
                   Entrar
                 </Button>
               </>
             ) : (
               <>
-                <Button type="submit">Cadastrar</Button>
+                <Button type="submit" onClick={handleSignOut}>
+                  Cadastrar
+                </Button>
               </>
             )}
 
