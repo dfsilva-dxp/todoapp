@@ -18,7 +18,7 @@ export const Button = styled.button`
 
   transition: filter 0.15s ease-in-out;
 
-  &:hover {
-    filter: brightness(0.9);
+  &:not([disabled]):hover {
+    filter: brightness(0.8);
   }
 `;
