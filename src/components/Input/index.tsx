@@ -1,12 +1,26 @@
-import { InputHTMLAttributes } from "react";
+import {
+  forwardRef,
+  ForwardRefRenderFunction,
+  InputHTMLAttributes,
+} from "react";
 
 import * as S from "./styles";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  name: string;
-  placeholder: string;
+  label: string;
+  id: string;
 }
 
-export function Input({ ...props }: InputProps) {
-  return <S.Input {...props} />;
-}
+const InputDefault: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
+  { label, id, ...props }: InputProps,
+  ref
+) => {
+  return (
+    <S.FormGroup>
+      <S.Label htmlFor={id}>{label}</S.Label>
+      <S.Input id={id} {...props} ref={ref} />
+    </S.FormGroup>
+  );
+};
+
+export const Input = forwardRef(InputDefault);
