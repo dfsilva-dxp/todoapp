@@ -41,18 +41,17 @@ export const Wrap = styled.div`
 
 export const Form = styled.form`
   width: min(420px, 100%);
-  background: #fff;
+  background: var(--white);
   padding: 1rem;
   border-radius: 0.5rem;
   box-shadow: 0 0 60px rgba(0, 0, 0, 0.05);
 
   display: grid;
-  grid-template-rows: repeat(5, 3rem);
+  grid-template-rows: repeat(5, auto);
   gap: 1rem;
 
   p {
     text-align: center;
-    color: #777;
 
     span {
       font-weight: 600;
@@ -61,7 +60,7 @@ export const Form = styled.form`
       transition: color 0.15s;
 
       &:hover {
-        color: #fd6699;
+        color: var(--purple-400);
       }
     }
   }
@@ -76,28 +75,5 @@ export const Title = styled.h4`
   &::after {
     content: attr(data-title);
     margin-left: 0.5rem;
-  }
-`;
-
-export const Button = styled.button`
-  display: inline-block;
-  padding: 0.375rem 0.75rem;
-  text-align: center;
-  vertical-align: middle;
-  user-select: none;
-  background-color: transparent;
-  border: 1px solid transparent;
-  border-radius: 0.25rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  font-weight: 600;
-  color: #fff;
-  background-color: #fd6699;
-  border-color: #fd6699;
-
-  transition: filter 0.15s ease-in-out;
-
-  &:hover {
-    filter: brightness(0.9);
   }
 `;

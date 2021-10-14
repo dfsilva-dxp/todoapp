@@ -51,13 +51,17 @@ export const Login = () => {
   );
 
   const handleSignOut = useCallback(
-    (e: FormEvent) => {
+    async (e: FormEvent) => {
       e.preventDefault();
-      signOut(credentials);
-      setCredentials({
-        email: "",
-        password: "",
-      });
+
+      await signOut(credentials)
+        .then(() => {
+          setCredentials({
+            email: "",
+            password: "",
+          });
+        })
+        .finally(() => setHasAccount(false));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [credentials]
@@ -77,14 +81,18 @@ export const Login = () => {
             <Input
               type="email"
               name="email"
+              label="Seu e-mail"
+              id="email"
               value={credentials.email}
               onChange={handleChange}
               required
-              placeholder="E-mail"
+              placeholder="johndoe@email.com"
             />
             <Input
               type="password"
               name="password"
+              label="Sua senha"
+              id="password"
               value={credentials.password}
               onChange={handleChange}
               required
