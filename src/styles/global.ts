@@ -53,6 +53,14 @@ button {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+.Toastify__toast-theme--colored.Toastify__toast--success {
+  background: #88F9D4 !important;
+}
+.Toastify__toast-theme--colored.Toastify__toast--error {
+  background: #E43E3D !important;
+}
+
 ::-webkit-scrollbar {
   width: 7px !important;
 }
