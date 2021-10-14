@@ -12,7 +12,7 @@ export function PrivateRoutes({ isPrivate, ...params }: PrivateRoutesProps) {
   const { "todo.refreshToken": refreshToken } = parseCookies();
 
   if (!loading && !!!refreshToken) {
-    return <Redirect to="/" />;
+    return <Redirect to="/login" />;
   }
 
   return <Route {...params} />;

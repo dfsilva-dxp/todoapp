@@ -10,8 +10,8 @@ const MyRoutes = () => {
   return (
     <AuthProvider>
       <Switch>
-        <Route path="/" exact component={Login} />
-        <PrivateRoutes path="/home" component={Home} />
+        <PrivateRoutes path="/" exact component={Home} />
+        <Route path="/" component={Login} />
       </Switch>
     </AuthProvider>
   );
