@@ -2,6 +2,27 @@ import { createGlobalStyle } from "styled-components";
 import "react-toastify/dist/ReactToastify.css";
 
 export const GlobalStyles = createGlobalStyle`
+:root {
+  --white: #fff;
+  --gray-50: #f7f8fa;
+  --gray-100: #e6e8eb;
+  --gray-150: #ced4da;
+  --gray-200: #afb2b1;
+  --gray-500: #808080;
+  --gray-800: #494d4b;
+
+  --green-500: #88F9D4;
+
+  --red-500: #e5001b;
+
+  --yellow-500: #ffbb11;
+
+  --purple-300: #9f75ff;
+  --purple-400: #9164fa;
+  --purple-500: #8257e5;
+  --purple-800: #6f48c9;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -20,8 +41,8 @@ html {
   }
 }
 body {
-  background: #f2f3f5;
-  color: #353646;
+  background: var(--gray-50);
+  color: var(--gray-800);
   font-family: "Roboto", sans-serif;
   overflow: hidden;
 }
@@ -31,6 +52,7 @@ button,
 label {
   font: 400 1rem/1rem "Roboto", sans-serif;
   outline: 0;
+  color: var(--gray-500);
 }
 ol,
 ul {
@@ -55,22 +77,22 @@ button {
 }
 
 .Toastify__toast-theme--colored.Toastify__toast--success {
-  background: #88F9D4 !important;
+  background: var(--green-500) !important;
 }
 .Toastify__toast-theme--colored.Toastify__toast--error {
-  background: #E43E3D !important;
+  background: var(--red-500) !important;
 }
 
 ::-webkit-scrollbar {
   width: 7px !important;
 }
 ::-webkit-scrollbar-track {
-  background: #232323 !important;
+  background: var(--gray-100) !important;
 }
 ::-webkit-scrollbar-thumb {
-  background: #232323 !important;
+  background: var(--purple-400) !important;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3585f3 !important;
+  background: var(--purple-500) !important;
 }
 `;
