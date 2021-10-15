@@ -11,7 +11,7 @@ const MyRoutes = () => {
     <AuthProvider>
       <Switch>
         <PrivateRoutes path="/" exact component={Home} />
-        <Route path="/" component={Login} />
+        <Route path="/login" component={Login} />
       </Switch>
     </AuthProvider>
   );

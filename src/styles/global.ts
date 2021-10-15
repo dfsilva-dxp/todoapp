@@ -42,17 +42,27 @@ html {
 }
 body {
   background: var(--gray-50);
+  font-family: "Poppins", sans-serif;
   color: var(--gray-800);
-  font-family: "Roboto", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
   overflow: hidden;
 }
 input, 
 textarea, 
 button,
 label {
-  font: 400 1rem/1rem "Roboto", sans-serif;
+  font: 400 0.9375rem/0.9375rem "Barlow Condensed", sans-serif;
   outline: 0;
   color: var(--gray-500);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Barlow Condensed", sans-serif;
 }
 ol,
 ul {
@@ -60,9 +70,6 @@ ul {
 }
 span {
   display: inline-block;
-}
-strong {
-  font: 700 1rem/1.2rem "Rajdhani", sans-serif;
 }
 a {
   text-decoration: none;
