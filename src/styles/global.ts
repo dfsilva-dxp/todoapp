@@ -78,6 +78,7 @@ button {
 
 .Toastify__toast-theme--colored.Toastify__toast--success {
   background: var(--green-500) !important;
+  color: var(--gray-800) !important;
 }
 .Toastify__toast-theme--colored.Toastify__toast--error {
   background: var(--red-500) !important;
