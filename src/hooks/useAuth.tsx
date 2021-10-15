@@ -25,6 +25,7 @@ type User = {
 type AuthContextData = {
   user: User;
   loading: boolean;
+  emailVerified: boolean;
   signIn: ({ email, password }: Credentials) => Promise<void>;
   signOut: ({ email, password }: Credentials) => Promise<void>;
   logout: () => Promise<void>;
@@ -43,6 +44,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User>({} as User);
+  const [emailVerified, setEmailVerified] = useState(false);
   const [loading, setLoading] = useState(false);
   const { refreshToken, cookies } = useCookies();
 
@@ -56,6 +58,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const emailValidator = async () => {
+    var user = await firebase.auth().currentUser;
+    user?.sendEmailVerification();
+  };
+
   const signIn = async ({ email, password }: Credentials) => {
     try {
       setLoading(true);
@@ -65,7 +72,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         .signInWithEmailAndPassword(email, password)
         .then(({ user }) => {
           if (user) {
-            const { refreshToken, uid } = user;
+            const { refreshToken, uid, emailVerified } = user;
+            setEmailVerified(emailVerified);
             session(refreshToken);
             setUser({ email, refreshToken, uid });
           }
@@ -92,8 +100,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       await firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          firebase.auth().signOut();
+        .then(({ user }) => {
+          if (user) {
+            const { emailVerified } = user;
+            setEmailVerified(emailVerified);
+          }
+
+          if (!!!emailVerified) {
+            emailValidator();
+          }
         });
 
       toast.success("User created successfully!", {
@@ -128,7 +143,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setLoading(true);
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-          const { email, refreshToken, uid } = user;
+          const { email, refreshToken, uid, emailVerified } = user;
+          setEmailVerified(emailVerified);
           setUser({ email, refreshToken, uid });
         }
         setLoading(false);
@@ -141,6 +157,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       value={{
         user,
         loading,
+        emailVerified,
         signIn,
         signOut,
         logout,
