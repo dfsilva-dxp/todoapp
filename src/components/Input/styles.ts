@@ -4,16 +4,26 @@ export const FormGroup = styled.div`
   position: relative;
 `;
 
+export const Icon = styled.div`
+  position: absolute;
+  width: 4rem;
+  height: 4rem;
+  font-size: 1.7rem;
+  display: grid;
+  place-items: center;
+  color: var(--gray-150);
+`;
+
 export const Input = styled.input`
   width: 100%;
-  height: 3rem;
-  padding: 0.375rem 0.75rem;
+  height: 4rem;
+  padding: 0 4.5rem;
+  padding-top: 0.625rem;
   border-style: none none solid;
   border-color: var(--gray-150);
   border-width: 1px;
-  border-radius: 0.25rem;
   outline: 0;
-  background-color: var(--gray-50);
+  background-color: var(--white);
   background-clip: padding-box;
   font-size: 1rem;
   line-height: 1.5;
@@ -27,10 +37,10 @@ export const Input = styled.input`
 `;
 
 export const Label = styled.label`
-  display: block;
+  position: absolute;
   color: var(--gray-800);
   font-weight: 600;
-  font-size: 0.875rem;
-  padding-bottom: 0.25rem;
-  padding-left: 0.75rem;
+  font-size: 0.9375rem;
+  padding-left: 4.5rem;
+  top: 0.25rem;
 `;
