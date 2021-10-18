@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 import { TiLockClosedOutline, TiMail } from "react-icons/ti";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
+
 import { useAuth } from "../../hooks/useAuth";
 
 import { Button } from "../Button";
@@ -23,10 +24,6 @@ export function SignInForm() {
 
   const history = useHistory();
   const { url } = useRouteMatch();
-
-  function handleClickBtnSignOut() {
-    history.push(`${url}/cadastrar`);
-  }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -81,18 +78,13 @@ export function SignInForm() {
         Esqueceu a senha?
         <Link to={`${url}/esqueci-a-senha`}>Clique aqui</Link>
       </p>
-      <S.BtnGroup>
-        <Button type="submit" btnStyle="primary">
-          Entrar
-        </Button>
-        <Button
-          type="button"
-          btnStyle="secondary"
-          onClick={handleClickBtnSignOut}
-        >
-          Criar Conta
-        </Button>
-      </S.BtnGroup>
+      <Button type="submit" btnStyle="primary">
+        Entrar
+      </Button>
+      <p>
+        Não tem uma conta?
+        <Link to={`${url}/cadastrar`}>Cadastre-se</Link>
+      </p>
     </S.Form>
   );
 }

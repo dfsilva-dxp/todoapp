@@ -19,9 +19,3 @@ export const Form = styled.form`
     }
   }
 `;
-
-export const BtnGroup = styled.span`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-`;
