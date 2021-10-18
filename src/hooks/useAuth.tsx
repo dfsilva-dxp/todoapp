@@ -20,15 +20,16 @@ type User = {
   email: string | null;
   uid: string;
   refreshToken: string;
+  emailVerified: boolean;
 };
 
 type AuthContextData = {
   user: User;
   loading: boolean;
-  emailVerified: boolean;
   signIn: ({ email, password }: Credentials) => Promise<void>;
   signOut: ({ email, password }: Credentials) => Promise<void>;
   logout: () => Promise<void>;
+  sendEmailVerification: () => Promise<void>;
 };
 
 type Credentials = {
@@ -44,26 +45,25 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User>({} as User);
-  const [emailVerified, setEmailVerified] = useState(false);
   const [loading, setLoading] = useState(false);
   const { refreshToken, cookies } = useCookies();
 
   const history = useHistory();
 
-  const session = (refreshToken = "") => {
+  function session(refreshToken = "") {
     if (refreshToken) {
       cookies.set("todo.refreshToken", refreshToken);
     } else {
       cookies.remove("todo.refreshToken");
     }
-  };
+  }
 
-  const emailValidator = async () => {
+  async function sendEmailVerification() {
     var user = await firebase.auth().currentUser;
     user?.sendEmailVerification();
-  };
+  }
 
-  const signIn = async ({ email, password }: Credentials) => {
+  async function signIn({ email, password }: Credentials) {
     try {
       setLoading(true);
 
@@ -73,9 +73,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         .then(({ user }) => {
           if (user) {
             const { refreshToken, uid, emailVerified } = user;
-            setEmailVerified(emailVerified);
             session(refreshToken);
-            setUser({ email, refreshToken, uid });
+            setUser({ email, refreshToken, uid, emailVerified });
           }
         });
     } catch (err) {
@@ -91,27 +90,21 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setLoading(false);
       }, 1000);
     }
-  };
+  }
 
-  const signOut = async ({ email, password }: Credentials) => {
+  async function signOut({ email, password }: Credentials) {
     try {
       setLoading(true);
 
       await firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .then(({ user }) => {
-          if (user) {
-            const { emailVerified } = user;
-            setEmailVerified(emailVerified);
-          }
+        .then(() => {
+          sendEmailVerification();
+        })
+        .finally(() => logout());
 
-          if (!!!emailVerified) {
-            emailValidator();
-          }
-        });
-
-      toast.success("User created successfully!", {
+      toast.success("Usuário criado com sucesso!", {
         theme: "colored",
         icon: false,
       });
@@ -125,9 +118,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     } finally {
       setLoading(false);
     }
-  };
+  }
 
-  const logout = async () => {
+  async function logout() {
     return await firebase
       .auth()
       .signOut()
@@ -136,7 +129,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         session();
       })
       .finally(() => history.push("/login"));
-  };
+  }
 
   useEffect(() => {
     if (refreshToken) {
@@ -144,8 +137,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           const { email, refreshToken, uid, emailVerified } = user;
-          setEmailVerified(emailVerified);
-          setUser({ email, refreshToken, uid });
+          setUser({ email, refreshToken, uid, emailVerified });
         }
         setLoading(false);
       });
@@ -157,10 +149,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       value={{
         user,
         loading,
-        emailVerified,
         signIn,
         signOut,
         logout,
+        sendEmailVerification,
       }}
     >
       {children}
