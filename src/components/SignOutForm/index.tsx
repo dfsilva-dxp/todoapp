@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
+import { Link } from "react-router-dom";
 import { TiLockClosedOutline, TiMail } from "react-icons/ti";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
 
 import { useAuth } from "../../hooks/useAuth";
 
@@ -15,15 +15,12 @@ type Credentials = {
   password: string;
 };
 
-export function SignInForm() {
+export function SignOutForm() {
   const [credentials, setCredentials] = useState<Credentials>({
     email: "",
     password: "",
   });
-  const { signIn } = useAuth();
-
-  const history = useHistory();
-  const { url } = useRouteMatch();
+  const { signOut } = useAuth();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -33,16 +30,15 @@ export function SignInForm() {
     });
   };
 
-  const handleSignIn = useCallback(
-    (e: FormEvent) => {
+  const handleSignOut = useCallback(
+    async (e: FormEvent) => {
       e.preventDefault();
 
-      signIn(credentials);
-      history.push("/");
-
-      setCredentials({
-        email: "",
-        password: "",
+      await signOut(credentials).then(() => {
+        setCredentials({
+          email: "",
+          password: "",
+        });
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,8 +46,8 @@ export function SignInForm() {
   );
 
   return (
-    <S.Form onSubmit={handleSignIn}>
-      <Title title="Login" />
+    <S.Form onSubmit={handleSignOut}>
+      <Title title="Cadastre-se" />
       <Input
         type="email"
         name="email"
@@ -74,16 +70,12 @@ export function SignInForm() {
         icon={<TiLockClosedOutline />}
         onChange={handleChange}
       />
-      <p>
-        Esqueceu a senha?
-        <Link to={`${url}/esqueci-a-senha`}>Clique aqui</Link>
-      </p>
       <Button type="submit" btnStyle="primary">
-        Entrar
+        Cadastrar
       </Button>
       <p>
-        Não tem uma conta?
-        <Link to={`${url}/cadastrar`}>Cadastre-se</Link>
+        Já tem uma conta?
+        <Link to="/login">Faça login</Link>
       </p>
     </S.Form>
   );
