@@ -11,5 +11,6 @@ const config = {
 };
 
 firebase.initializeApp(config);
+firebase.auth().languageCode = "pt-BR";
 
 export default firebase;

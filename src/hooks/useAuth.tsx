@@ -60,7 +60,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   async function sendEmailVerification() {
     var user = await firebase.auth().currentUser;
-    user?.sendEmailVerification();
+    user?.sendEmailVerification({
+      url: "http://localhost:3000/login",
+    });
   }
 
   async function signIn({ email, password }: Credentials) {
