@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "todolist-myapp": "todolist-app-67530",
+    "default": "todolist-app-67530"
+  },
+  "targets": {
+    "todolist-app": {
+      "hosting": {
+        "todolist-app-67530": [
+          "todolist-myapp"
+        ]
+      }
+    }
+  }
+}
