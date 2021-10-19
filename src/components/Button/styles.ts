@@ -5,7 +5,7 @@ export const Button = styled.button`
   padding: 0.75rem 2.25rem;
   vertical-align: middle;
   user-select: none;
-  border-radius: 3rem;
+  border-radius: 0.25rem;
   font-size: 0.875rem;
   line-height: 1.5;
   font-weight: 500;
