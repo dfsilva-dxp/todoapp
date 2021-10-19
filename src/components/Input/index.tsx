@@ -7,13 +7,12 @@ import {
 import * as S from "./styles";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string;
   id: string;
   icon: JSX.Element;
 }
 
 const InputDefault: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (
-  { label, icon, ...props }: InputProps,
+  { icon, ...props }: InputProps,
   ref
 ) => {
   return (

@@ -18,9 +18,8 @@ export const Input = styled.input`
   width: 100%;
   height: 3rem;
   padding: 0 3.5rem;
-  border-style: none none solid;
-  border-color: var(--gray-150);
-  border-width: 1px;
+  border-radius: 0.25rem;
+  border: 1px solid var(--gray-150);
   outline: 0;
   background-color: var(--white);
   background-clip: padding-box;
