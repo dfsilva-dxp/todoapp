@@ -1,9 +1,11 @@
 import styled from "styled-components";
 
 export const Button = styled.button`
+  height: 3rem;
   padding: 0.75rem 2.25rem;
   vertical-align: middle;
   user-select: none;
+  border-radius: 3rem;
   font-size: 0.875rem;
   line-height: 1.5;
   font-weight: 500;
