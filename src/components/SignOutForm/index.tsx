@@ -51,18 +51,16 @@ export function SignOutForm() {
       <Input
         type="email"
         name="email"
-        label="Seu e-mail"
         id="email"
         value={credentials.email}
         required
-        placeholder="johndoe@email.com"
+        placeholder="Seu e-mail"
         icon={<TiMail />}
         onChange={handleChange}
       />
       <Input
         type="password"
         name="password"
-        label="Senha"
         id="password"
         value={credentials.password}
         required
@@ -70,13 +68,14 @@ export function SignOutForm() {
         icon={<TiLockClosedOutline />}
         onChange={handleChange}
       />
-      <Button type="submit" btnStyle="primary">
-        Cadastrar
-      </Button>
-      <p>
-        Já tem uma conta?
+
+      <S.WrapButtons>
         <Link to="/login">Faça login</Link>
-      </p>
+
+        <Button type="submit" btnStyle="primary">
+          Cadastrar
+        </Button>
+      </S.WrapButtons>
     </S.Form>
   );
 }
