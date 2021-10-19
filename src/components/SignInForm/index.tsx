@@ -55,18 +55,16 @@ export function SignInForm() {
       <Input
         type="email"
         name="email"
-        label="Seu e-mail"
         id="email"
         value={credentials.email}
         required
-        placeholder="johndoe@email.com"
+        placeholder="Seu e-mail"
         icon={<TiMail />}
         onChange={handleChange}
       />
       <Input
         type="password"
         name="password"
-        label="Senha"
         id="password"
         value={credentials.password}
         required
@@ -74,16 +72,15 @@ export function SignInForm() {
         icon={<TiLockClosedOutline />}
         onChange={handleChange}
       />
+      <S.WrapButtons>
+        <Link to={`${url}/esqueci-a-senha`}>Esqueceu a senha?</Link>
+        <Button type="submit" btnStyle="primary">
+          Entrar
+        </Button>
+      </S.WrapButtons>
       <p>
-        Esqueceu a senha?
-        <Link to={`${url}/esqueci-a-senha`}>Clique aqui</Link>
-      </p>
-      <Button type="submit" btnStyle="primary">
-        Entrar
-      </Button>
-      <p>
-        Não tem uma conta?
-        <Link to={`${url}/cadastrar`}>Cadastre-se</Link>
+        OU
+        {/* <Link to={`${url}/cadastrar`}>Cadastre-se</Link> */}
       </p>
     </S.Form>
   );
