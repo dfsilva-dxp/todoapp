@@ -1,11 +1,13 @@
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 import { TiLockClosedOutline, TiMail } from "react-icons/ti";
+import { RiFacebookFill, RiGithubLine, RiGoogleFill } from "react-icons/ri";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
 
 import { useAuth } from "../../hooks/useAuth";
 
 import { Button } from "../Button";
 import { Input } from "../Input";
+import { SocialButton } from "../SocialButton";
 import { Title } from "../Title";
 
 import * as S from "./styles";
@@ -82,6 +84,18 @@ export function SignInForm() {
         OU
         {/* <Link to={`${url}/cadastrar`}>Cadastre-se</Link> */}
       </p>
+      <div>
+        <SocialButton>
+          <RiGoogleFill />
+        </SocialButton>
+        <SocialButton>
+          <RiFacebookFill />
+        </SocialButton>
+        <SocialButton>
+          <RiGithubLine />
+        </SocialButton>
+        <SocialButton>Cadastre-se</SocialButton>
+      </div>
     </S.Form>
   );
 }
