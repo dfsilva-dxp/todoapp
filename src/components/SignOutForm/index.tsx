@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
-import { Link } from "react-router-dom";
 import { TiLockClosedOutline, TiMail } from "react-icons/ti";
+import { useHistory } from "react-router-dom";
 
 import { useAuth } from "../../hooks/useAuth";
 
@@ -21,6 +21,9 @@ export function SignOutForm() {
     password: "",
   });
   const { signOut } = useAuth();
+  const history = useHistory();
+
+  const handleRedirect = () => history.push(`/login`);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -69,13 +72,14 @@ export function SignOutForm() {
         onChange={handleChange}
       />
 
-      <S.WrapButtons>
-        <Link to="/login">Faça login</Link>
+      <Button type="submit" btnStyle="primary">
+        Cadastrar
+      </Button>
 
-        <Button type="submit" btnStyle="primary">
-          Cadastrar
-        </Button>
-      </S.WrapButtons>
+      <p>Já tem uma conta?</p>
+      <Button type="button" btnStyle="secondary" onClick={handleRedirect}>
+        Ir para Login
+      </Button>
     </S.Form>
   );
 }
