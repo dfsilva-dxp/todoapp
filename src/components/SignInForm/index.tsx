@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 import { TiLockClosedOutline, TiMail } from "react-icons/ti";
 import { RiFacebookFill, RiGithubLine, RiGoogleFill } from "react-icons/ri";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { Link, useHistory, useRouteMatch } from "react-router-dom";
 
 import { useAuth } from "../../hooks/useAuth";
 
@@ -27,15 +27,21 @@ export function SignInForm() {
   const history = useHistory();
   const { url } = useRouteMatch();
 
-  const handleRedirect = () => history.push(`${url}/cadastrar`);
+  const handleRedirect = useCallback(
+    () => history.push(`${url}/cadastrar`),
+    [url, history]
+  );
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setCredentials({
-      ...credentials,
-      [name]: value,
-    });
-  };
+  const handleChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setCredentials({
+        ...credentials,
+        [name]: value,
+      });
+    },
+    [credentials]
+  );
 
   const handleSignIn = useCallback(
     (e: FormEvent) => {
@@ -77,7 +83,7 @@ export function SignInForm() {
         onChange={handleChange}
       />
 
-      <strong>Esqueceu a senha?</strong>
+      <Link to={`${url}/esqueci-a-senha`}>Esqueceu a senha?</Link>
 
       <S.WrapButtons>
         <Button type="submit" btnStyle="primary">
