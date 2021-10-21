@@ -6,8 +6,8 @@ export const Form = styled.form`
   display: grid;
   gap: 1rem;
 
-  strong {
-    cursor: pointer;
+  a {
+    font-weight: 500;
     font-size: 0.75rem;
     text-align: right;
 
