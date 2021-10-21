@@ -1,22 +1,27 @@
 import { FormEvent, useCallback, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { TiMail } from "react-icons/ti";
+
 import { useAuth } from "../../hooks/useAuth";
+
+import { Title } from "../Title";
+import { Input } from "../Input";
 import { Button } from "../Button";
 
-import { Input } from "../Input";
-import { Title } from "../Title";
 import * as S from "./styles";
 
 export function SendResetPassword() {
   const [email, setEmail] = useState("");
   const { sendPasswordResetEmail } = useAuth();
+  const history = useHistory();
 
   const handleSubmit = useCallback(
     async (e: FormEvent) => {
       e.preventDefault();
       await sendPasswordResetEmail(email);
+      history.push("/login");
     },
-    [email, sendPasswordResetEmail]
+    [email, sendPasswordResetEmail, history]
   );
 
   return (
