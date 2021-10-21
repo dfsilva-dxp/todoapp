@@ -5,4 +5,5 @@ export const PreloaderContent = styled.section`
   height: 100vh;
   display: grid;
   place-items: center;
+  background-color: var(--purple-400);
 `;
