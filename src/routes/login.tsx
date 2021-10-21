@@ -10,10 +10,6 @@ export const LoginRoutes = () => {
     <Switch>
       <Route exact path={path} component={SignInForm} />
       <Route path={`${path}/cadastrar`} component={SignOutForm} />
-      <Route
-        path={`${path}/esqueci-a-senha`}
-        component={() => <p>Esqueci minha senha</p>}
-      />
     </Switch>
   );
 };
