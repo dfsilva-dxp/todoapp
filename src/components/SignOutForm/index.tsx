@@ -23,15 +23,18 @@ export function SignOutForm() {
   const { signOut } = useAuth();
   const history = useHistory();
 
-  const handleRedirect = () => history.push(`/login`);
+  const handleRedirect = useCallback(() => history.push(`/login`), [history]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setCredentials({
-      ...credentials,
-      [name]: value,
-    });
-  };
+  const handleChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setCredentials({
+        ...credentials,
+        [name]: value,
+      });
+    },
+    [credentials]
+  );
 
   const handleSignOut = useCallback(
     async (e: FormEvent) => {
