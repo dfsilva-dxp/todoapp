@@ -41,3 +41,9 @@ export const WrapButtons = styled.span`
   gap: 1rem;
   align-items: center;
 `;
+
+export const WrapSocialButtons = styled.span`
+  display: grid;
+  grid-template-columns: auto repeat(3, 1fr);
+  gap: 1rem;
+`;

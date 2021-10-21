@@ -27,6 +27,8 @@ export function SignInForm() {
   const history = useHistory();
   const { url } = useRouteMatch();
 
+  const handleRedirect = () => history.push(`${url}/cadastrar`);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setCredentials({
@@ -84,18 +86,20 @@ export function SignInForm() {
         OU
         {/* <Link to={`${url}/cadastrar`}>Cadastre-se</Link> */}
       </p>
-      <div>
-        <SocialButton>
+      <S.WrapSocialButtons onClick={handleRedirect}>
+        <SocialButton type="button" backgroundColor="#fff" iconColor="#494d4b">
+          Cadastre-se
+        </SocialButton>
+        <SocialButton backgroundColor="#fff" iconColor="#D14835">
           <RiGoogleFill />
         </SocialButton>
-        <SocialButton>
+        <SocialButton backgroundColor="#fff" iconColor="#405BA3">
           <RiFacebookFill />
         </SocialButton>
-        <SocialButton>
+        <SocialButton backgroundColor="#fff" iconColor="#494d4b">
           <RiGithubLine />
         </SocialButton>
-        <SocialButton>Cadastre-se</SocialButton>
-      </div>
+      </S.WrapSocialButtons>
     </S.Form>
   );
 }
