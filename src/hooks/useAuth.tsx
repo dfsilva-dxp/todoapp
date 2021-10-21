@@ -32,6 +32,7 @@ type AuthContextData = {
   signOut: ({ email, password }: Credentials) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   signInWithGithub: () => Promise<void>;
+  signInWithFacebook: () => Promise<void>;
   logout: () => Promise<void>;
   sendEmailVerification: () => Promise<void>;
   sendPasswordResetEmail: (email: string) => Promise<void>;
@@ -239,6 +240,48 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }
 
+  async function signInWithFacebook() {
+    try {
+      setLoading(true);
+
+      await firebase
+        .auth()
+        .signInWithPopup(new firebase.auth.FacebookAuthProvider())
+        .then(({ user }) => {
+          console.log(user);
+          if (user) {
+            const {
+              displayName,
+              email,
+              photoURL,
+              refreshToken,
+              uid,
+              emailVerified,
+            } = user;
+            session(refreshToken);
+            setUser({
+              displayName,
+              email,
+              photoURL,
+              refreshToken,
+              uid,
+              emailVerified,
+            });
+            history.push("/");
+          }
+        });
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message, {
+          theme: "colored",
+          icon: false,
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     if (refreshToken) {
       setLoading(true);
@@ -261,6 +304,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         signOut,
         signInWithGoogle,
         signInWithGithub,
+        signInWithFacebook,
         logout,
         sendEmailVerification,
         sendPasswordResetEmail,
