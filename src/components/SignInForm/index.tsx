@@ -22,7 +22,7 @@ export function SignInForm() {
     email: "",
     password: "",
   });
-  const { signIn, signInWithGoogle } = useAuth();
+  const { signIn, signInWithGoogle, signInWithGithub } = useAuth();
 
   const history = useHistory();
   const { url } = useRouteMatch();
@@ -103,11 +103,17 @@ export function SignInForm() {
         >
           <RiGoogleFill />
         </SocialButton>
-        <SocialButton backgroundColor="#fff" iconColor="#405BA3">
-          <RiFacebookFill />
-        </SocialButton>
-        <SocialButton backgroundColor="#fff" iconColor="#494d4b">
+
+        <SocialButton
+          type="button"
+          backgroundColor="#fff"
+          iconColor="#494d4b"
+          onClick={signInWithGithub}
+        >
           <RiGithubLine />
+        </SocialButton>
+        <SocialButton backgroundColor="#fff" iconColor="#405ba3">
+          <RiFacebookFill />
         </SocialButton>
       </S.WrapSocialButtons>
     </S.Form>

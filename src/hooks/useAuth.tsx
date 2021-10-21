@@ -31,6 +31,7 @@ type AuthContextData = {
   signIn: ({ email, password }: Credentials) => Promise<void>;
   signOut: ({ email, password }: Credentials) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
+  signInWithGithub: () => Promise<void>;
   logout: () => Promise<void>;
   sendEmailVerification: () => Promise<void>;
   sendPasswordResetEmail: (email: string) => Promise<void>;
@@ -196,6 +197,48 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }
 
+  async function signInWithGithub() {
+    try {
+      setLoading(true);
+
+      await firebase
+        .auth()
+        .signInWithPopup(new firebase.auth.GithubAuthProvider())
+        .then(({ user }) => {
+          console.log(user);
+          if (user) {
+            const {
+              displayName,
+              email,
+              photoURL,
+              refreshToken,
+              uid,
+              emailVerified,
+            } = user;
+            session(refreshToken);
+            setUser({
+              displayName,
+              email,
+              photoURL,
+              refreshToken,
+              uid,
+              emailVerified,
+            });
+            history.push("/");
+          }
+        });
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message, {
+          theme: "colored",
+          icon: false,
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     if (refreshToken) {
       setLoading(true);
@@ -217,6 +260,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         signIn,
         signOut,
         signInWithGoogle,
+        signInWithGithub,
         logout,
         sendEmailVerification,
         sendPasswordResetEmail,
