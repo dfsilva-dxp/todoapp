@@ -17,9 +17,10 @@ type AuthProviderProps = {
 };
 
 type User = {
-  name?: string;
-  email: string | null;
   uid: string;
+  displayName?: string | null;
+  email: string | null;
+  photoURL?: string | null;
   refreshToken: string;
   emailVerified: boolean;
 };
@@ -29,6 +30,7 @@ type AuthContextData = {
   loading: boolean;
   signIn: ({ email, password }: Credentials) => Promise<void>;
   signOut: ({ email, password }: Credentials) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
   sendEmailVerification: () => Promise<void>;
   sendPasswordResetEmail: (email: string) => Promise<void>;
@@ -153,6 +155,47 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       .finally(() => history.push("/login"));
   }
 
+  async function signInWithGoogle() {
+    try {
+      setLoading(true);
+
+      await firebase
+        .auth()
+        .signInWithPopup(new firebase.auth.GoogleAuthProvider())
+        .then(({ user }) => {
+          if (user) {
+            const {
+              displayName,
+              email,
+              photoURL,
+              refreshToken,
+              uid,
+              emailVerified,
+            } = user;
+            session(refreshToken);
+            setUser({
+              displayName,
+              email,
+              photoURL,
+              refreshToken,
+              uid,
+              emailVerified,
+            });
+            history.push("/");
+          }
+        });
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message, {
+          theme: "colored",
+          icon: false,
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     if (refreshToken) {
       setLoading(true);
@@ -173,6 +216,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         loading,
         signIn,
         signOut,
+        signInWithGoogle,
         logout,
         sendEmailVerification,
         sendPasswordResetEmail,

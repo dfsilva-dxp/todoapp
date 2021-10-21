@@ -22,7 +22,7 @@ export function SignInForm() {
     email: "",
     password: "",
   });
-  const { signIn } = useAuth();
+  const { signIn, signInWithGoogle } = useAuth();
 
   const history = useHistory();
   const { url } = useRouteMatch();
@@ -94,8 +94,13 @@ export function SignInForm() {
         </Button>
       </S.WrapButtons>
       <p>Ou faça login com</p>
-      <S.WrapSocialButtons onClick={handleRedirect}>
-        <SocialButton backgroundColor="#fff" iconColor="#D14835">
+      <S.WrapSocialButtons>
+        <SocialButton
+          type="button"
+          backgroundColor="#fff"
+          iconColor="#D14835"
+          onClick={signInWithGoogle}
+        >
           <RiGoogleFill />
         </SocialButton>
         <SocialButton backgroundColor="#fff" iconColor="#405BA3">
