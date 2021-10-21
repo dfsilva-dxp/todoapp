@@ -10,6 +10,7 @@ import { useHistory } from "react-router";
 
 import firebase from "../services/firebase";
 import { useCookies } from "./useCookies";
+import { actionCodeSettings } from "../utils/actionCodeSettings";
 
 type AuthProviderProps = {
   children: ReactNode;
@@ -30,6 +31,7 @@ type AuthContextData = {
   signOut: ({ email, password }: Credentials) => Promise<void>;
   logout: () => Promise<void>;
   sendEmailVerification: () => Promise<void>;
+  sendPasswordResetEmail: (email: string) => Promise<void>;
 };
 
 type Credentials = {
@@ -59,10 +61,28 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }
 
   async function sendEmailVerification() {
-    var user = await firebase.auth().currentUser;
-    user?.sendEmailVerification({
-      url: "http://localhost:3000/login",
-    });
+    const user = await firebase.auth().currentUser;
+    user?.sendEmailVerification(actionCodeSettings);
+  }
+
+  async function sendPasswordResetEmail(email: string) {
+    await firebase
+      .auth()
+      .sendPasswordResetEmail(email, actionCodeSettings)
+      .then(() => {
+        toast.success(`E-mail de redefinição de senha enviado para ${email}`, {
+          theme: "colored",
+          icon: false,
+        });
+      })
+      .catch((err) => {
+        if (err instanceof Error) {
+          toast.error(err.message, {
+            theme: "colored",
+            icon: false,
+          });
+        }
+      });
   }
 
   async function signIn({ email, password }: Credentials) {
@@ -155,6 +175,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         signOut,
         logout,
         sendEmailVerification,
+        sendPasswordResetEmail,
       }}
     >
       {children}
