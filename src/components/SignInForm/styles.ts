@@ -6,9 +6,10 @@ export const Form = styled.form`
   display: grid;
   gap: 1rem;
 
-  a {
-    font-weight: 500;
-    font-size: 0.875rem;
+  strong {
+    cursor: pointer;
+    font-size: 0.75rem;
+    text-align: right;
 
     &:hover {
       color: var(--purple-400);
@@ -17,6 +18,7 @@ export const Form = styled.form`
 
   p {
     text-align: center;
+    text-transform: uppercase;
     font-size: 0.875rem;
     font-weight: 500;
     color: var(--gray-200);
@@ -44,6 +46,6 @@ export const WrapButtons = styled.span`
 
 export const WrapSocialButtons = styled.span`
   display: grid;
-  grid-template-columns: auto repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
 `;

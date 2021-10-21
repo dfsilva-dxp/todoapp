@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 import { TiLockClosedOutline, TiMail } from "react-icons/ti";
 import { RiFacebookFill, RiGithubLine, RiGoogleFill } from "react-icons/ri";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 
 import { useAuth } from "../../hooks/useAuth";
 
@@ -76,20 +76,19 @@ export function SignInForm() {
         icon={<TiLockClosedOutline />}
         onChange={handleChange}
       />
+
+      <strong>Esqueceu a senha?</strong>
+
       <S.WrapButtons>
-        <Link to={`${url}/esqueci-a-senha`}>Esqueceu a senha?</Link>
         <Button type="submit" btnStyle="primary">
           Entrar
         </Button>
-      </S.WrapButtons>
-      <p>
-        OU
-        {/* <Link to={`${url}/cadastrar`}>Cadastre-se</Link> */}
-      </p>
-      <S.WrapSocialButtons onClick={handleRedirect}>
-        <SocialButton type="button" backgroundColor="#fff" iconColor="#494d4b">
+        <Button type="button" btnStyle="secondary" onClick={handleRedirect}>
           Cadastre-se
-        </SocialButton>
+        </Button>
+      </S.WrapButtons>
+      <p>Ou faça login com</p>
+      <S.WrapSocialButtons onClick={handleRedirect}>
         <SocialButton backgroundColor="#fff" iconColor="#D14835">
           <RiGoogleFill />
         </SocialButton>
